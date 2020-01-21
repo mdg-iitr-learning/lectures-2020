@@ -1,320 +1,273 @@
-The Unix OS  
-===========
+# Git Lecture :green_book:
 
-Made up of three parts kernel, shell and programs.
+## What is VCS?
+- Version Control System stores changes in file(s) over time so we can check out any version anytime.
+- Tracks who modified what in the code. 
+- Allows to revert back to a version.
+- Each collaborator has the whole version history in his computer in `.git` folder.
 
-The kernel  
---------
-The kernel of UNIX is the hub of the operating system: it allocates
- time and memory to programs and handles the filestore and
- communications in response to system calls.
-
-As an illustration of the way that the shell and the kernel work
-together, suppose a user types `rm myfile` (which has the effect of
-removing the file myfile). The shell searches the filestore for the
-file containing the program `rm`, and then requests the kernel,
-through system calls, to execute the program rm and passes the file
-name as a parameter. When the process `rm myfile` has finished
-running, the shell then returns the UNIX prompt % to the user,
-indicating that it is waiting for further commands.
-
-The shell  
---------
-The shell acts as an interface between the user and the kernel. When a
-user logs in, the login program checks the username and password, and
-then starts another program called the shell. A shell is a command
-line interpreter (CLI). It interprets the commands the user types in
-and arranges for them to be carried out.  The commands are themselves
-programs: when they terminate, the shell gives the user another prompt
-(% on our systems).
-
-Files and processes  
---------
-Everything in UNIX is either a file or a process.
-
-A process is an executing program identified by a unique PID (process
-identifier).
-
-A file is a collection of data. They are created by users using text
-editors, running compilers etc.
-
-Some common commands  
---------
-* `ls` : list of files (can also be used as ls {dir_name})
-  * `-a` : files that are normally hidden
-* `mkdir` : To make a subdirectory called unixstuff in your current
- working directory type
-
-* `cp path1 path2` : to copy file specified by path1 to the
-  destination specified by path2
-* `mv path1 path2` : to move/rename
-* `clear` : clear screen
-* `cat` : to display contents
-* `less` : same as above but one page at a time
-* `head` : display first 10 lines (can also be used as head -5
-  filename)
-* `tail` : display the last 10 lines
-* `grep string filename` : It searches files for specified words or
-  patterns. First clear the screen
-  * The grep command is case sensitive; it distinguishes between
-    Science and science.
-  * To search for a phrase or pattern, you must enclose it in single
-    quotes (the apostrophe symbol)
-  * `-v` display those lines that do NOT match
-  * `-n` precede each matching line with the line number
-  * `-c` print only the total count of matched lines
-  * `-i` To ignore upper/lower case distinctions
-  * `eg` : grep -ivc science science.txt
-* `wc` : word count
-  * `-w` for words
-  * `-l` for lines
-* `\>` : Redirects the output (stdout). for eg : cat > eg
-* `\>>` : append
-* `|` : pipe
-* sort / who / \*,? wildcard
-* Online manuals :
-  * man wc
-  * whatis wc
-  * apropos copy
-
-The directory structure  
---------
-| Path | Description |
-|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| / | This is the root directory which should contain only the directories needed at the top level of the file structure |
-| /bin | This is where the executable files are located. These files are available to all users |
-| /dev | These are device drivers |
-| /etc | Supervisor directory commands, configuration files, disk configuration files, valid user lists, groups, ethernet, hosts, where to send critical messages |
-| /lib | Contains shared library files and sometimes other kernel-related files |
-| /boot | Contains files for booting the system |
-| /home | Contains the home directory for users and other accounts |
-| /mnt | Used to mount other temporary file systems, such as cdrom and floppy for the CD-ROM drive and floppy diskette drive, respectively |
-| /proc | Contains all processes marked as a file by process number or other information that is dynamic to the system |
-| /tmp | Holds temporary files used between system boots |
-| /usr | Used for miscellaneous purposes, and can be used by many users. Includes administrative commands, shared files, library files, and others |
-| /var | Typically contains variable-length files such as log and print files and any other type of file that may contain a variable amount of data |
-| /sbin | Contains binary (executable) files, usually for system administration. For example, fdisk and ifconfig utlities |
-| /kernel | Contains kernel files |
-
-File system security  
---------
-Each file (and directory) has associated
-access rights, which may be found by typing ls -l. Also, ls -lg gives
-additional information as to which group owns the file (beng95 in the
-following example):
-
+## Git vs other VCSs
+Most of the VCSs think of the information they store as a set of files and the changes made to each file over time (delta based version control).<br> 
+ <img src = "images/deltas.png" width = "700" height="200" /><br> 
+Git thinks of its data as a stream of snapshots. Each time we store data a snapshot is taken of all files at that time. For increasing efficiency, the files that aren't changed are referenced from previous commit. This makes common operations faster.<br>
+<img src = "images/snapshots.png" width = "700" height="200" /><br>
+ 
+## Install Git
+### For Linux
 ```shell
-~$ ls -lg ee51ab
--rwxrw-r-- 1 ee51ab beng95 2450 Sept29 11:52 file1
+$ add-apt-repository ppa:git-core/ppa
+$ sudo apt update
+$ sudo apt install git
+```
+### For Windows
+
+## Initialise Git repo
+```bash
+$ cd ~/Desktop
+$ mkdir git-tutorial
+$ cd git-tutorial
+$ git init
 ```
 
-In the left-hand column is a 10 symbol string consisting of the
-symbols d, r, w, x, -, and, occasionally, s or S. If d is present, it
-will be at the left hand end of the string, and indicates a directory:
-otherwise - will be the starting symbol of the string.
-
-The 9 remaining symbols indicate the permissions, or access rights,
-and are taken as three groups of 3.
-
-* The left group of 3 gives the file permissions for the user that
-  owns the file (or directory) (ee51ab in the above example);
-* the middle group gives the permissions for the group of people to
-  whom the file (or directory) belongs (eebeng95 in the above
-  example);
-* the rightmost group gives the permissions for all others.
-
-The symbols r, w, etc., have slightly different meanings depending on
-whether they refer to a simple file or to a directory.
-
-### Access rights on files  
-* r (or -), indicates read permission (or otherwise), that is, the
-  presence or absence of permission to read and copy the file
-* w (or -), indicates write permission (or otherwise), that is, the
-  permission (or otherwise) to change a file
-* x (or -), indicates execution permission (or otherwise), that is,
-  the permission to execute a file, where appropriate
-
-### Access rights on directories  
-* r allows users to list files in the directory;
-* w means that users may delete files from the directory or move files
-  into it;
-* x means the right to access files in the directory. This implies
-  that you may read files in the directory provided you have read
-  permission on the individual files.
-
-So, in order to read a file, you must have execute permission on the
-directory containing that file, and hence on any directory containing
-that directory as a subdirectory, and so on, up the tree.
-
-### Changing permissions  
-For example, to remove read write and execute permissions on the file
-biglist for the group and others, type
-
-|    Symbol   |         Description			   |
-|-------------|--------------------------------|
-| u           | user                      	   |
-| g           | group                          |
-| o           | other  						   |
-| a           | all  						   |
-| r           | read  						   |
-| w           | write (and delete) 			   |
-| x           | execute (and access directory) |
-| +           | add permission  			   |
-| -           | take away permission  		   |
-
-```shell
-~$ chmod go-rwx biglist
-```
-This will leave the other permissions unaffected.
-
-To give read and write permissions on the file biglist to all,
-
-```shell
-~$ chmod a+rw biglist
+## `.git` folder
+`.git` folder in the root directory of the project is where Git stores all the information. Deleting this folder will result in deletion of all versions and further Git commands will show the error -
+```bash
+$ fatal: Not a git repository (or any of the parent directories): .git
 ```
 
-### Octal permissions
-r = 4 | w = 2 | x = 1
-
-```shell
-~$ chmod 755 MyDir
+## Configure username and email
+```bash
+$ git config --global user.name 'RohanBh'
+$ git config --global user.email 'brohan52@gmail.com’
 ```
 
-The root user
---------
-Both `su` and `sudo` are used to run commands with root
-permissions. The root user is basically equivalent to the
-administrator user on Windows – the root user has maximum permissions
-and can do anything to the system. Normal users on Linux run with
-reduced permissions – for example, they can’t install software or
-write to system directories.
+## Install Atom or Sublime Text Editor
+### Atom
+```bash
+$ sudo add-apt-repository ppa:webupd8team/atom
+$ sudo apt update
+$ sudo apt install atom
+```
+### Sublime
+```bash
+$ sudo add-apt-repository ppa:webupd8team/sublime-text-3
+$ sudo apt-get update
+$ sudo apt-get install sublime-text-installer
+```
+**Note -** Run Atom using the command `atom` and Sublime using the command `subl` from terminal.
 
-To do something that requires these permissions, you’ll have to
-acquire them with su or sudo.
-
-`su` vs `sudo`
---------
-The `su` command switches to the super user – or root user – when you
-execute it with no additional options. You’ll have to enter the root
-account’s password. This isn’t all the su command does, though – you
-can use it to switch to any user account. If you execute the su bob
-command, you’ll be prompted to enter Bob’s password and the shell will
-switch to Bob’s user account.
-
-Once you’re done running commands in the root shell, you should type
-exit to leave the root shell and go back to limited-privileges mode.
-
-Sudo runs a single command with root privileges. When you execute sudo
-command, the system prompts you for your current user account’s
-password before running command as the root user. By default, Ubuntu
-remembers the password for fifteen minutes and won’t ask for a
-password again until the fifteen minutes are up.
-
-Processes and Jobs
---------
-A process is an executing program identified by a unique PID (process
-identifier). To see information about your processes, with their
-associated PID and status, type
-
-```shell
-~$ ps
+## Use editor of your choice
+```bash
+$ git config --global core.editor "subl -n -w"
+$ git config --global core.editor "atom --wait"
+```
+**OR**<br> 
+```bash
+$ export GIT_EDITOR=subl
 ```
 
-A process may be in the foreground, in the background, or be
-suspended. In general the shell does not return the UNIX prompt until
-the current process has finished executing.
+<p>This will be valid only for current session of terminal.</p>
 
-Some processes take a long time to run and hold up the
-terminal. Backgrounding a long process has the effect that the UNIX
-prompt is returned immediately, and other tasks can be carried out
-while the original process continues executing.
 
-When a process is running, backgrounded or suspended, it will be
-entered onto a list along with a job number. To examine this list,
-type
+## Use Vim Editor
+- press i to start typing
+- press esc to stop typing
+- Type :wq (w-write q-quit)
+- then press enter to exit
 
-```shell
-~$ jobs
-```
 
-An example of a job list could be
+## Common commands
+- **`git status`**
+- **`git add`**
 
-* [1] Suspended sleep 1000
-* [2] Running netscape
-* [3] Running matlab
+	- #### Usage
+	```bash
+	$ git add <file1> <file2> <file3>
+	$ git add *.txt
+	$ git add --all 
+	$ git add .
+	```
+	- Untracked files
+	- Tracked files
+	<br>`git add` stages the changes made to files. Also git starts tracking the *untracked files* if they are added to staging area.
+	- #### Three States of changes done
+		- **Committed** means that the data is safely stored in your local database.
+		- **Modified** means that you have changed the file but have not committed it to your database yet.
+		- **Staged** means that you have marked a modified file in its current version to go into your next commit snapshot.
+		
+		#### The Staging Area
+		<img src = "images/areas.png" width = "500" height="200" /><br>
+		**Note -**<br> Working Directory is also knows as **Working Tree**. Also, the Staging Area is referred to as **Index**. It acts as an interface between working tree and repository.
+		- Any time you see your project, its state can be understood as 
+			> Project = ".git Repository" + "changes in Index" + "changes in Working directory"
+		- Although commands like `git diff` shows us these changes, remember that these "changes" are actually "whole files" as mentioned in [this section](#git-vs-other-vcss) 
+		- Changes are "staged", if they are in the "Index" and unstaged if they are in the "Working directory".
 
-UNIX variables
---------
-Variables are a way of passing information from the shell to programs
-when you run them. Programs look "in the environment" for particular
-variables and if they are found will use the values stored. Some are
-set by the system, others by you, yet others by the shell, or any
-program that loads another program.
+- **`git reset`**
+	<br> It is used to undo add.
 
-Standard UNIX variables are split into two categories, environment
-variables and shell variables. In broad terms, shell variables apply
-only to the current instance of the shell and are used to set
-short-term working conditions; environment variables have a farther
-reaching significance, and those set at login are valid for the
-duration of the session. By convention, environment variables have
-UPPER CASE and shell variables have lower case names.
+	- #### Usage
+	```bash
+	$ git reset <file1> <file2> <file3> # Take the files out of the staging area
+	$ git reset --hard <commit-id>  
+	$ git reset --soft <commit-id>
+	$ git reset --soft/hard HEAD~n # Use this to move the branch back by n commits
+	```
+	**Note -** `git reset` by default runs with the flag `--mixed`. To get an in depth knowledge of `git reset`, read [this SO post](https://stackoverflow.com/a/3528483/7263373) or [this official post](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified).
 
-### Env variables
+- **`git commit`**
+	<br>Commit is like a snapshot in time. We can return back to this commit anytime in future.
 
-```shell
-~$ echo $OSTYPE
-```
-ENVIRONMENT variables are set using the setenv command, displayed using the printenv or env commands, and unset using the unsetenv command.
+	- #### Usage
+	```bash
+	$ git commit -m "Commit message"
+	```
+	- Amend previous commit
+	```bash
+	$ git commit --amend -m "Change previous commit message"
+	$ git commit --amend --no-edit # Modify previous commit but keep the commit message same
+	```
+	If we have some changes that we would like to include in the last commit, we use `--amend` flag with `git commit`. This new commit contains all the newly staged changes as well as the changes that were committed in the last commit. The new commit is not same as the previous commit. Therefore, if origin/branch has the old commit and you push an "ammended commit" then your branch will diverge!
 
-To show all values of these variables, type
-```shell
-~$ printenv | less
-```
+	- Commit all tracked files 
+	```bash
+	$ git commit -a -m "Commit message"
+	```
+	This command adds all the "tracked files" to the staging area and then commits the changes made in them.
 
-Changing visibility of a process
---------
-To send a process to background add an ampersand `&` at the end of the command, for example:
-```shell
-~$ emacs & # This will start emacs in background, NOTE: This does not redirect the output
-```
 
-To keep a process running when even when the terminal is closed use `& disown` at the end of a command:
-```shell
-~$ emacs & disown # This will start emacs in the bg and keep it runnning even when the terminal is closed
-```
+- **`git diff`**
+	<br> `git diff` prints nothing for Untracked files.
 
-To read more about `&`, `disown` and `nohup`, you can
-head
-[here](https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and#148698).
+	- #### Usage
+	```bash
+	$ git diff # View all the unstaged changes made since last commit
+	$ git diff --cached # View all the staged changes made since the last commit
+	$ git diff --staged # Same as --cached
+	$ git diff <file1> <file2> <file3> # View the changes only for the mention files
+	$ git diff <commit-id> # View the changes you have in your Working tree relative to the named <commit>
+	$ git diff HEAD # if we use HEAD as <commit>, we will get both staged and unstaged diff since last commit.
+	$ git diff <commit-1> <commit-2> # same as <commit-1>..<commit-2>, explained below
+	```
+	`git diff <commit-1> <commit-2>` is used to view the changes between two arbitrary commits. In other words, it prints out the difference between the working tree you'll get after doing `git checkout <commit-2>` and the working tree you'll get after doing `git checkout <commit-1>`. So, when using it for two commits in the same branch, to include the changes done in `<commit-1>`, we run `git checkout <commit-1>^ <commit-2>`, where `<commot-1>^1` points to the parent commit of `<commit-1>`.
 
-Further exploration
--------
-kill, sleep, file, diff, find, history, setting up env variables etc.
 
-## Random stuff
+- **`git log`**
 
-``` shell
-nc localhost 1123     # to connect to port 1123
-nc -l 1234            # to listen to port 1234
-chmod                 # change file permissions
-chown                 # change file owner
-chgrp                 # change file group
-ping -c4 8.8.8.8      # to send 4 packets to google's server at 8.8.8.8
-sudo lsof -i          # to list network sockets
-```
-DNS == Domain Name System
-            DNS contains records , few of which map domain names to their IP addresses.
+	- #### Usage
+	```bash
+	$ git log
+	$ git log -p # View diffs introduced with each commit
+	$ git log -n 5
+	$ git log --all # show all commits except for the ones that are "lost"
+	$ git log --oneline # this flag condenses each commit to a single line
+	$ git log --graph # this draws an ASCII graph representing the branch structure of the commit history
+	$ git log --oneline --graph --all # Used to print the whole network
+	```
+	Sample Output
+	```bash
+	commit 9c2f963d097df58040ee26673a15f50dc4c954dc
+	Author: RohanBh <brohan52@gmail.com>
+	Date:   Fri Jan 19 11:23:57 2018 +0530
+    	Complete the more section
+	commit 3b1c96765005b1806b31617987a9bfb374a943b7
+	Author: RohanBh <brohan52@gmail.com>
+	Date:   Thu Jan 18 19:45:19 2018 +0530
+    	Add GridView adapter
+	:
+	```
+	Git identifies commits by attaching a long hexadecimal number to every commit. These can be seen using `git log`. The ID corresponding to the commit <u>"Complete the more section"</u> is 9c2f963d097df58040ee26673a15f50dc4c954dc. Usually first 4-5 characters of this ID are enough to identify the commit.
 
-```shell
-host google.com           # This command can be used to look the DNS records
-dig google.com            # This command is same as host but host provides data in human
-                          # readable form whereas dig provides data in script readable form
-ip addr show              # to bring out the interfaces on your computer
-ifconfig | less           # does the same as above
-ip route show default     # shows the address of the default gateways
-                          # default gateway is the router through which your machine
-                          # is connected to the rest of the internet
-netstat -nr               # slightly similar to above
-tcpdump -n port portName  # brings out details about the connections
-uname -r                  #  to check for kernel version
-```
+- **`git checkout`**
+
+	- #### Usage
+	```bash
+	$ git checkout <commit-id> # Visit the commit made earlier with id=<commit-d>
+	$ git checkout branch-name # Change to another branch 
+	$ git checkout -b branch-name # Create a new branch and then checkout that branch
+	$ git checkout -- <file1> <file2> <file3> # discard unstaged changes(changes in the Working Directory)
+	$ git checkout <commit-id> <file1> # Update the index and working directory so that they match with the committed file1 at that commit. 
+	$ git checkout HEAD file1 # discard all changes(staged or unstaged) made to file1
+	```
+	- **NOTE - The last command is not Working Directory safe. Your changes in Working Directory could be lost. This is why it can be used for discarding changes with HEAD in place of <commit-id>.**
+	- #### HEAD
+	HEAD is a reference to the last commit in the currently checked-out branch. Git automatically moves the HEAD pointer along when you create a new commit. You are automatically on the newest commit of the chosen branch.
+	- #### Detached HEAD
+	When we commit in a Detached HEAD state, the commits do not belong to any branch and are thus **lost**.
+- **`git branch`**
+
+	- #### Usage
+	```bash
+	$ git branch --list # display all local branches
+	$ git branch # same as above
+	$ git branch -r # display all remote branches
+	$ git branch new-branch # create a new branch
+	$ git branch -d old-branch # Delete a branch if the local old-branch isn't ahead of origin/old-branch in commits. Shortcut for --delete.
+	$ git branch -D old-branch # force delete a branch anyways. Shortcut for --delete --force
+	```
+- **`git stash`**
+	
+	- #### Usage
+	```bash
+	$ git stash # stash away modified tracked files and staged changes so that you are free to switch branches
+	$ git stash apply # Apply the stashed changes. It doesn't removes the removes the changes from the stash list
+	$ git stash drop # Remove a single stash entry from the stash list
+	$ git stash pop # is equivalent to `git stash apply && git stash drop`
+	```
+
+- **`git merge`**
+
+	- #### Usage
+	```bash
+	$ git merge branchname -m "Commit message"
+	$ git merge --no-ff -m "Commit message"
+	```
+	- A fast forward merge moves the branch pointer to the head of branch that is being merged instead of creating a merge commit. 
+	- Let's say branch B is to be merged in branch A. A fast forward merge happens by default if the branch A's tip is the ancestor of branch B. To prevent it, we use `no-ff` flag.
+
+- **`git remote`**
+	
+	- #### Usage
+	```bash
+	$ git remote add origin https://github.com/<username>/learning.git
+	$ git remote -v #list existing remotes
+	$ git remote set-url origin url.git #change existing origin
+	```
+	**Note -** `.git` can be omitted.
+
+
+- **`git push`**
+	
+	- #### Usage
+	```bash
+	$ git push origin branch-name # push local changes to remote branch
+	$ git push -f origin branch-name # force-push local changes
+	```
+
+- **git fetch**
+
+	- #### Usage
+	```bash
+	$ git fetch # fetch the latest changes from the default remote upstream repository
+	$ git fetch remote # fetch changes from specific remote
+	$ git fetch --all # fetch changes from all remote repos
+	```
+
+
+- **`git pull`**
+
+	- #### Usage
+	```bash
+	$ git pull origin branch-name #   Fetch branch from a remote repository and merge it to local repository.
+	```
+
+## Using `.gitignore`
+Add the files and directories you'd like git to ignore. These files and directories will not be tracked by git. 
+<br> Related post : https://stackoverflow.com/a/1139797/7263373 
+
+
+## Useful Links
+- [Git Upstream vs Downstream](https://stackoverflow.com/a/2739476/7263373)
+- [HEAD^ vs HEAD~](https://stackoverflow.com/questions/2221658/whats-the-difference-between-head-and-head-in-git)
+- [Understanding git reset and checkout](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)
+- [Git Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
