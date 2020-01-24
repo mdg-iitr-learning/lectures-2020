@@ -1,0 +1,30 @@
+PASSWORDS n SOLNS:
+
+bandit0     
+     ls -al THEN cat readme
+boJ9jbbUNNfktd78OOpsqOltutMc3MY1 password 1
+     ls -al THEN cat ./-     
+CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9 password 2
+     ls -al THEN cat spaces / in / this / filename
+UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK password 3
+     cd inhere THEN ls -al THEN cat .hidden
+pIwrPrtPN36QITSp3EQaw936yaFoFgAB password 4
+     cd inhere,THEN repeatedly checked files for filetype ASCII; for eg; file file00...
+     password found in file07.
+koReBOKuIDDepwhWk7jZC0RTdopnAYKh password 5
+     USED THIS, (*DON'T WRITE b for bytes): find inhere -type f -size 1033c -exec ls {} \;
+DXjZPULLxYr17uwoI01bNLQbtFemEgo7 password 6
+     DID find / -user bandit7 AND THEN cat /var/lib/dpkg/info/bandit7.password
+HKBPTKQnIay4Fw76bEy8PVxKEDQRKTzs password 7
+     DID cat data.txt | grep millionth
+cvX2JJa4CFALtqS87jk27qwqGhBM9plV passowrd 8
+      USED cat data.txt | sort | uniq -u
+UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR password 9
+      cat data.txt | sort -d
+truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk password 10
+      cat data.txt | base64 -d
+IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR password 11
+      cat data.txt | tr 'N-ZA-Mn-za-m' 'A-Za-z'   (*wikipedia as ref)
+5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu password 12
+    
+
