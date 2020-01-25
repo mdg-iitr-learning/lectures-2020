@@ -1,0 +1,15 @@
+level   password					command to reach next level
+0	bandit0					cat readme
+1	boJ9jbbUNNfktd78OOpsqOltutMc3MY1	cat ./-	
+2	CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9	cat spaces\ in\ this\ filename
+3	UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK	ls -a
+						cat .hidden
+4	pIwrPrtPN36QITSp3EQaw936yaFoFgAB	find -type f  -exec cat {} \;
+5	koReBOKuIDDepwhWk7jZC0RTdopnAYKh	find -size 1033c
+						cat ./maybehere07/.file2
+6	DXjZPULLxYr17uwoI01bNL0btFemEgo7	find -type f -size 33c -user bandit7 -group bandit6
+7	HKBPTKQnIay4Fw76bEy8PVxKEDQRKTzs	grep millionth data.txt
+8	cvX2JJa4CFALtqS87jk27qwqGhBM9plV	sort data.txt|uniq -u
+9	UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR	strings data.txt
+10	truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk	base64 -d data.txt
+11	IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
