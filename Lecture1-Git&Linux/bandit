@@ -11,4 +11,7 @@ Passwords :
 10- truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
 11- IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
 12- 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu  => using rot13 is interesting, implementation: tr '[A-Za-z]' '[N-ZA-Mn-za-m]'
-13- 
+13- 8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL  => good use of mv, gzip (.gz extension), bzip2 (.bz), xxd -r (revert) .... great question!
+14- 4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e  => use of private key explained very well in this example; helped log in bandit14 from bandit13 without actually knowing the password;
+					                               and password was read easily in bandit14 as it had user access!
+15- 
