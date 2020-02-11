@@ -2,7 +2,8 @@
 #include"ray.h"
 #include<fstream>
 
-float hit_sphere(const vec3& center, float radius, const ray& r) {
+float hit_sphere(const vec3& center, float radius, const ray& r)
+{
     vec3 oc = r.origin() - center;
     float a = dot(r.direction(), r.direction());
     float b = 2.0 * dot(oc, r.direction());
@@ -16,7 +17,8 @@ float hit_sphere(const vec3& center, float radius, const ray& r) {
     }
 }
 
-vec3 color(const ray& r) {
+vec3 color(const ray& r) 
+{
     float t = hit_sphere(vec3(0,0,-1), 0.5, r);
     if (t > 0.0) {
         vec3 N = unit_vector(r.point_at_parameter(t) - vec3(0,0,-1));

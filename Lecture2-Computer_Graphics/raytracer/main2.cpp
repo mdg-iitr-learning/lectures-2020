@@ -2,7 +2,8 @@
 #include <fstream>
 #include "vec3.h"
 
-int main() {
+int main() 
+{
     int nx = 200;
     int ny = 100;
     std::ofstream fout; 
